@@ -29,4 +29,17 @@ class UserController extends Controller
 
     }
 
+    function updateUser(Request $request){
+        $user = User::find((int)$request->id);
+        $user->username = $request->username;
+        $user->full_name = $request->full_name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->role = (int)$request->role;
+        $user->save();
+        return response()->json($user, 200);
+    }
+
 }

@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
 
+    //function list users
+    function listUsers(Request $request){
+        return response()->json(User::all(), 200);
+    }
+
     //function untuk insert user baru
     function insertUser(Request $request){
 

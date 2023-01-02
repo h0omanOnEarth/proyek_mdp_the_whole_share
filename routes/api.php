@@ -19,4 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//routes :
+//mengambil semua users
+Route::get('/listUsers', [UserController::class, "listUsers"]);
+
+//insert user baru
 Route::post('/register', [UserController::class, "insertUser"]);

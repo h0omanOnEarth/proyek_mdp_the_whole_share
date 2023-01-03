@@ -16,15 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //routes :
-//mengambil semua users
-Route::get('/listUsers', [UserController::class, "listUsers"]);
-//insert user baru
-Route::post('/register', [UserController::class, "insertUser"]);
-//update user
-Route::post('/updateUser',[UserController::class, "updateUser"]);
+// User API routes
+Route::controller(UserController::class)->group(function () {
+    //mengambil semua users
+    Route::get('/listUsers', 'listUsers');
+    //insert user baru
+    Route::post('/register', 'insertUser');
+    //update user
+    Route::post('/updateUser', 'updateUser');
 
+    Route::post('/login', 'loginUser');
+});

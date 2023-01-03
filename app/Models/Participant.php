@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class Participant extends Model
 {
     use HasFactory;
-
-    protected $table = "locations";
+    protected $table = "participants";
     protected $primaryKey = "id";
     public $incrementing = true;
-    public $timestamps = false;
-    protected $fillable = ["address", "note"];
+    public $timestamps = true;
+    protected $fillable = ["user_id", "request_id", "pickup", "status"];
 }

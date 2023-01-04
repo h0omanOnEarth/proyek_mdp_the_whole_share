@@ -41,4 +41,7 @@ Route::controller(UserController::class)->group(function () {
 
     //insert request baru
     Route::post('/addrequest', 'addrequest');
+
+    //list news
+    Route::get('/listNews','listNews');
 });

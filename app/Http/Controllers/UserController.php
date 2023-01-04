@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use App\Models\RequestLoc;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,6 +37,11 @@ class UserController extends Controller
     //function list request
     function listRequest(Request $request){
         return response()->json(RequestLoc::all(), 200);
+    }
+
+    //function list news
+    function listNews(Request $request){
+        return response()->json(News::all(), 200);
     }
 
     //function untuk insert user baru

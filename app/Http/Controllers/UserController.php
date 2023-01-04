@@ -62,6 +62,18 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
+    function updateUserNoHash(Request $request){
+        $user = User::find((int)$request->id);
+        $user->username = $request->username;
+        $user->full_name = $request->full_name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->email = $request->email;
+        $user->role = (int)$request->role;
+        $user->save();
+        return response()->json($user, 200);
+    }
+
     /**
      * Attempts to log in the user with the credentials provided by the request object.
      * Searches for the appropriate username matching with the one in the request object,

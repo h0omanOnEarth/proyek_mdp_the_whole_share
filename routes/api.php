@@ -29,6 +29,8 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/register', 'insertUser');
     //update user
     Route::post('/updateUser', 'updateUser');
+    //update user kalau ngga ngehash :
+    Route::post('/updateUserNoHash','updateUserNoHash');
 
     Route::post('/login', 'loginUser');
 

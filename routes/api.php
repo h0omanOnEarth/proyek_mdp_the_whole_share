@@ -31,4 +31,10 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/updateUser', 'updateUser');
 
     Route::post('/login', 'loginUser');
+
+    //mengambil semua requests
+    Route::get('/listRequest', 'listRequest');
+
+    //insert request baru
+    Route::post('/addrequest', 'addrequest');
 });

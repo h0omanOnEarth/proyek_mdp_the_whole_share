@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RequestLoc;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,11 @@ class UserController extends Controller
     //function list users
     function listUsers(Request $request){
         return response()->json(User::all(), 200);
+    }
+
+    //function list request
+    function listRequest(Request $request){
+        return response()->json(RequestLoc::all(), 200);
     }
 
     //function untuk insert user baru
@@ -27,6 +33,19 @@ class UserController extends Controller
             "role"=> (int)$request->role
         ));
         return response()->json($user, 201);
+
+    }
+
+    function addrequest(Request $request){
+
+        $requestloc = RequestLoc::create(array(
+            "location" => $request->location,
+            "batch" => (int)$request->batch,
+            "deadline" => $request->deadline,
+            "note"=> $request->note,
+            "status"=> $request->status
+        ));
+        return response()->json($requestloc, 201);
 
     }
 

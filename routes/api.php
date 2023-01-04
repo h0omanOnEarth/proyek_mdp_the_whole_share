@@ -27,10 +27,18 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/listUsers', 'listUsers');
     //update user
     Route::post('/updateUser', 'updateUser');
+    //update user kalau ngga ngehash :
+    Route::post('/updateUserNoHash','updateUserNoHash');
 
     // Memverifikasi user ada di DB dan credentials yang diberikan sesuai.
     Route::post('/login', 'loginUser');
 
     // Menregistrasikan user apabila semua credentials sudah sesuai peraturan.
     Route::post('/register', 'registerUser');
+
+    //mengambil semua requests
+    Route::get('/listRequest', 'listRequest');
+
+    //insert request baru
+    Route::post('/addrequest', 'addrequest');
 });

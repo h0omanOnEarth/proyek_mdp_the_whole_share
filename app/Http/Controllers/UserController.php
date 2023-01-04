@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RequestLoc;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,12 +33,17 @@ class UserController extends Controller
         return response()->json(User::all(), 200);
     }
 
+    //function list request
+    function listRequest(Request $request){
+        return response()->json(RequestLoc::all(), 200);
+    }
+
     //function untuk insert user baru
     function insertUser(Request $request){
 
         $user = User::create(array(
             "username" => $request->username,
-            "password" => $request->password,
+            "password" => Hash::make($request->password),
             "full_name" => $request->full_name,
             "phone"=> $request->phone,
             "address"=> $request->address,
@@ -48,6 +54,19 @@ class UserController extends Controller
 
     }
 
+    function addrequest(Request $request){
+
+        $requestloc = RequestLoc::create(array(
+            "location" => $request->location,
+            "batch" => (int)$request->batch,
+            "deadline" => $request->deadline,
+            "note"=> $request->note,
+            "status"=> $request->status
+        ));
+        return response()->json($requestloc, 201);
+
+    }
+
     function updateUser(Request $request){
         $user = User::find((int)$request->id);
         $user->username = $request->username;
@@ -55,7 +74,19 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->address = $request->address;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
+        $user->role = (int)$request->role;
+        $user->save();
+        return response()->json($user, 200);
+    }
+
+    function updateUserNoHash(Request $request){
+        $user = User::find((int)$request->id);
+        $user->username = $request->username;
+        $user->full_name = $request->full_name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->email = $request->email;
         $user->role = (int)$request->role;
         $user->save();
         return response()->json($user, 200);

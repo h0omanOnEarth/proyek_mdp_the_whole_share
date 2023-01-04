@@ -44,4 +44,9 @@ Route::controller(UserController::class)->group(function () {
 
     //list news
     Route::get('/listNews','listNews');
+
+
+    //route insert new participant pada donasi user
+    Route::post('/insertParticipant','insertParticipant');
+
 });

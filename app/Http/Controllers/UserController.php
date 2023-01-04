@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Participant;
 use App\Models\RequestLoc;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,6 +43,17 @@ class UserController extends Controller
     //function list news
     function listNews(Request $request){
         return response()->json(News::all(), 200);
+    }
+
+    //function untuk insert participants
+    function insertParticipant(Request $request){
+        $participant = Participant::create(array(
+           "user_id" => $request->user_id,
+           "request_id" => $request->request_id,
+           "pickup" => $request->pickup,
+           "status"=> $request->status
+        ));
+        return response()->json($participant, 201);
     }
 
     //function untuk insert user baru

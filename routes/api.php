@@ -25,10 +25,12 @@ use Illuminate\Support\Facades\Route;
 Route::controller(UserController::class)->group(function () {
     //mengambil semua users
     Route::get('/listUsers', 'listUsers');
-    //insert user baru
-    Route::post('/register', 'insertUser');
     //update user
     Route::post('/updateUser', 'updateUser');
 
+    // Memverifikasi user ada di DB dan credentials yang diberikan sesuai.
     Route::post('/login', 'loginUser');
+
+    // Menregistrasikan user apabila semua credentials sudah sesuai peraturan.
+    Route::post('/register', 'registerUser');
 });

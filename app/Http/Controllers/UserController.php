@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    // Util functions
+    /**
+     * Returns a JSON object that acts as a fail respond from a failed operation in the server.
+     * Contains a status key which always defaults
+     *
+     * @param String $reason A string containing the explaination why the operation failed.
+     * @param int $status An integer code that indicates what is the fail code, defaults to 0.
+     *
+     * @return JSON A JSON object holding the fail status code, and the reason why the operation fail.
+     */
+    private function failRespond(String $reason, int $status = 0) {
+        return response()->json([
+            "status" => $status, // Operation failed
+            "reason" => $reason
+        ], 200);
+    }
+
+    // ===   ===   ===
 
     //function list users
     function listUsers(Request $request){
@@ -57,25 +75,68 @@ class UserController extends Controller
 
         // Check if the user with the targeted username is not found, then fail the login attempt.
         if (!isset($dbUser)) {
-            return response()->json([
-                "status" => 0,
-                "reason" => "The user with that username is not found!"
-            ], 200);
+            return $this->failRespond("The user with that username is not found!");
         }
 
         // Check if the user password does not match with the one in the request, then fail the login attempt.
         if (!Hash::check($request->password, $dbUser->password)) {
-            return response()->json([
-                "status" => 0,
-                "reason" => "The provided password does not match."
-            ], 200);
+            return $this->failRespond("The provided password does not match.");
         }
 
         // The login attempt is successful, return the user object as the response.
         return response()->json([
-            'status' => 1,
+            'status' => 1, // Operation successful
             'user' => $dbUser
         ], 200);
         // dd($dbUser->toJson());
+    }
+
+    /**
+     * Attempts to register the user with the provided data. If any data is missing/unique columns value duplicated/does no comply to the rules,
+     * then the register attempt is cancelled and return a respond on what cancelled the attempt. Otherwise, register to the database and return
+     * the registered user.
+     *
+     * @return JSON A JSON response object containing the status of the operation. If the operation failed, it will contain a `reason` key,
+     *              else if it is succesful, it will contain the newly created user model with the key `user`.
+     */
+    function registerUser(Request $request) {
+        // Validate that the username is not taken
+        $dbUser = User::where('username', $request->username)->first();
+        if (isset($dbUser)) {
+            return $this->failRespond("That username is taken!");
+        }
+
+        // Validate that the full name is not taken
+        $dbUser = User::where('full_name', $request->full_name)->first();
+        if (isset($dbUser)) {
+            return $this->failRespond("That full name is taken!");
+        }
+
+        // Validate that the email is a valid email syntax
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            return $this->failRespond("That email is invalid!");
+        }
+
+        // Validate that the email is not taken
+        $dbUser = User::where('email', $request->email)->first();
+        if (isset($dbUser)) {
+            return $this->failRespond("That email is taken!");
+        }
+
+        // Register the user into the database if all rules have been complied.
+        $user = User::create(array(
+            "username" => $request->username,
+            "password" => Hash::make($request->password),
+            "full_name" => $request->full_name,
+            "phone"=> $request->phone,
+            "address"=> $request->address,
+            "email"=> $request->email,
+            "role"=> (int)$request->role
+        ));
+
+        return response()->json([
+            "status" => 1, // Operation successful
+            "user" => $user
+        ], 201);
     }
 }

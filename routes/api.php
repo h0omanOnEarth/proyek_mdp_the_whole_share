@@ -51,4 +51,7 @@ Route::controller(UserController::class)->group(function () {
     //route untuk list participants
     Route::get('/listParticipants','listParticipants');
 
+    //route list participants user yang sedang login
+    Route::get('/listMyParticipants','listMyParticipants');
+
 });

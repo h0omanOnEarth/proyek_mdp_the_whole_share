@@ -61,6 +61,11 @@ class UserController extends Controller
         return response()->json(Participant::all(), 200);
     }
 
+    //function list participant user login
+    function listMyParticipants(Request $request){
+        return response()->json(Participant::where('user_id',$request->user_id)->get(), 200);
+    }
+
     //function untuk insert user baru
     function insertUser(Request $request){
 

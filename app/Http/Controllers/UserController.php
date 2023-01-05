@@ -48,12 +48,17 @@ class UserController extends Controller
     //function untuk insert participants
     function insertParticipant(Request $request){
         $participant = Participant::create(array(
-           "user_id" => $request->user_id,
-           "request_id" => $request->request_id,
+           "user_id" =>(int)$request->user_id,
+           "request_id" =>(int)$request->request_id,
            "pickup" => $request->pickup,
-           "status"=> $request->status
+           "status"=>(int) $request->status
         ));
         return response()->json($participant, 201);
+    }
+
+    //function list participants
+    function listParticipants(Request $request){
+        return response()->json(Participant::all(), 200);
     }
 
     //function untuk insert user baru

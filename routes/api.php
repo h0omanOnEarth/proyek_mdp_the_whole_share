@@ -54,4 +54,6 @@ Route::controller(UserController::class)->group(function () {
     //route list participants user yang sedang login
     Route::get('/listMyParticipants','listMyParticipants');
 
+    //route ambil user
+    Route::get('/getUser','getUser');
 });

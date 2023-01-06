@@ -206,4 +206,11 @@ class UserController extends Controller
             "user" => $user
         ], 201);
     }
+
+    function getUser(Request $request){
+        $dbUser = User::where('username', $request->user)->get();
+        return response()->json([
+            "user" => $dbUser
+        ], 201);
+    }
 }

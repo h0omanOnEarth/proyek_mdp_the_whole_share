@@ -19,7 +19,7 @@ return new class extends Migration
             $table->tinyInteger('batch');
             $table->timestamp('deadline')->nullable();
             $table->text('note');
-            $table->tinyInteger('status');
+            $table->string('status');
             $table->timestamps();
             $table->softDeletes();
         });

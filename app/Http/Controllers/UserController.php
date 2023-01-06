@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use App\Models\Participant;
+use App\Models\Participants;
 use App\Models\RequestLoc;
+use App\Models\Requests;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -37,7 +39,7 @@ class UserController extends Controller
 
     //function list request
     function listRequest(Request $request){
-        return response()->json(RequestLoc::all(), 200);
+        return response()->json(Requests::all(), 200);
     }
 
     //function list news
@@ -47,7 +49,7 @@ class UserController extends Controller
 
     //function untuk insert participants
     function insertParticipant(Request $request){
-        $participant = Participant::create(array(
+        $participant = Participants::create(array(
            "user_id" =>(int)$request->user_id,
            "request_id" =>(int)$request->request_id,
            "pickup" => $request->pickup,
@@ -58,12 +60,12 @@ class UserController extends Controller
 
     //function list participants
     function listParticipants(Request $request){
-        return response()->json(Participant::all(), 200);
+        return response()->json(Participants::all(), 200);
     }
 
     //function list participant user login
     function listMyParticipants(Request $request){
-        return response()->json(Participant::where('user_id',$request->user_id)->get(), 200);
+        return response()->json(Participants::where('user_id',$request->user_id)->get(), 200);
     }
 
     //function untuk insert user baru
@@ -84,7 +86,7 @@ class UserController extends Controller
 
     function addrequest(Request $request){
 
-        $requestloc = RequestLoc::create(array(
+        $requestloc = Requests::create(array(
             "location" => $request->location,
             "batch" => (int)$request->batch,
             "deadline" => $request->deadline,
@@ -214,3 +216,4 @@ class UserController extends Controller
         ], 201);
     }
 }
+

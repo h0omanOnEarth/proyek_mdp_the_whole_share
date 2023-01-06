@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,5 +26,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class
         ]);
+        $this->call([RequestsSeeder::class]);
+        $this->call([NewsSeeder::class]);
+        $this->call([LogsSeeder::class]);
+        $this->call([ParticipantsSeeder::class]);
+
     }
 }

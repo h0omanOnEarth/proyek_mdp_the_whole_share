@@ -91,7 +91,15 @@ class UserController extends Controller
             "note"=> $request->note,
             "status"=> $request->status
         ));
-        return response()->json($requestloc, 201);
+
+        // $requestloc = array(
+        //     "message" => "sukses"
+        // );
+
+        return response()->json([
+            "status" => 1, // Operation successful
+            "requestloc" => $requestloc
+        ], 201);
 
     }
 

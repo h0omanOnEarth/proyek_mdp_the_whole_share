@@ -59,4 +59,10 @@ Route::controller(UserController::class)->group(function () {
 
     //route untuk mendapatkan list lokasi yang masih tidak expired deadline e
     Route::get('/listLocationsUser','listLocationsUser');
+
+    //route untuk mendapatkan list request atau lokasi yang sudah expired
+    Route::get('/listLocationExpired','listLocationExpired');
+
+    //route untuk edit status participant yang sudah expired jadi auto cannceled
+    Route::post('/updateStatusParticipants','updateStatusParticipants');
 });

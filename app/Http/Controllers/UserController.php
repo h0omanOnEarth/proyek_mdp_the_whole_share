@@ -35,6 +35,11 @@ class UserController extends Controller
         return response()->json(Requests::where('deadline','>=',date('Y-m-d'))->where('status','1')->get(), 200);
     }
 
+    //function list location yang sudah expired
+    function listLocationExpired(Request $request){
+        return response()->json(Requests::where('deadline','<',date('Y-m-d'))->get(), 200);
+    }
+
     //function list users
     function listUsers(Request $request){
         return response()->json(User::all(), 200);
@@ -69,6 +74,13 @@ class UserController extends Controller
     //function list participant user login
     function listMyParticipants(Request $request){
         return response()->json(Participants::where('user_id',$request->user_id)->get(), 200);
+    }
+
+    function updateStatusParticipants(Request $request){
+        $participant = Participants::find((int)$request->id);
+        $participant->status = (int)$request->status;
+        $participant->save();
+        return response()->json($participant, 200);
     }
 
     //function untuk insert user baru

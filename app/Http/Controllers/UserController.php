@@ -30,7 +30,10 @@ class UserController extends Controller
         ], 200);
     }
 
-    // ===   ===   ===
+      //function list location yang ditampilkan masih yang deadlinenya jauh
+      function listLocationsUser(Request $request){
+        return response()->json(Requests::where('deadline','>=',date('Y-m-d'))->where('status','1')->get(), 200);
+    }
 
     //function list users
     function listUsers(Request $request){

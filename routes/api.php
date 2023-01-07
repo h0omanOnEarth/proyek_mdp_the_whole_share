@@ -56,4 +56,7 @@ Route::controller(UserController::class)->group(function () {
 
     //route ambil user
     Route::get('/getUser','getUser');
+
+    //route untuk mendapatkan list lokasi yang masih tidak expired deadline e
+    Route::get('/listLocationsUser','listLocationsUser');
 });

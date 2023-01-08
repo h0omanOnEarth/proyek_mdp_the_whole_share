@@ -65,4 +65,5 @@ Route::controller(UserController::class)->group(function () {
 
     //route untuk edit status participant yang sudah expired jadi auto cannceled
     Route::post('/updateStatusParticipants','updateStatusParticipants');
+
 });

@@ -20,6 +20,6 @@ class ParticipantsSeeder extends Seeder
         DB::statement("SET FOREIGN_KEY_CHECKS=0");
         DB::table("participants")->truncate();
         DB::statement("SET FOREIGN_KEY_CHECKS=1");
-        Participants::factory()->count(10)->create();
+        Participants::factory()->count(30)->create();
     }
 }

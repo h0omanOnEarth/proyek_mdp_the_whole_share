@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -66,4 +67,15 @@ Route::controller(UserController::class)->group(function () {
     //route untuk edit status participant yang sudah expired jadi auto cannceled
     Route::post('/updateStatusParticipants','updateStatusParticipants');
 
+});
+
+// An API that handles the courier requests for the application.
+Route::controller(CourierController::class)->group(function () {
+    // A route to handle the courier requests for the requests in the database.
+    Route::prefix('/requests')->group(function () {
+        Route::get('/countAvailable', 'countAvailablePackets');
+        Route::get('/countOngoing', 'countOngoingPackets');
+        Route::get('/countCancelled', 'countCancelledPackets');
+        Route::get('/countFinished', 'countFinishedPackets');
+    });
 });

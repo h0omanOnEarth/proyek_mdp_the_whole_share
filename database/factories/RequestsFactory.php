@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Helpers\RequestStatuses;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class RequestsFactory extends Factory
             'batch' => 1,
             'deadline' => $this->faker->dateTimeBetween('+1 week','+3 week'),
             'note' => $this->faker->words(20,true),
-            'status'=>  $this->faker->randomElement(['Pending','Sent','Finished'])
+            'status'=>  $this->faker->randomElement(RequestStatuses::STATUSES)
         ];
     }
 }

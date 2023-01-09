@@ -32,7 +32,7 @@ class UserController extends Controller
 
       //function list location yang ditampilkan masih yang deadlinenya jauh
       function listLocationsUser(Request $request){
-        return response()->json(Requests::where('deadline','>=',date('Y-m-d'))->where('status','1')->get(), 200);
+        return response()->json(Requests::where('deadline','>=',date('Y-m-d'))->get(), 200);
     }
 
     //function list location yang sudah expired

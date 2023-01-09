@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Helpers\RequestStatuses;
 use App\Models\RequestLoc;
 use App\Models\Requests;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,10 +20,13 @@ class NewsFactory extends Factory
      */
     public function definition()
     {
+
+        $requests = Requests::where('status', RequestStatuses::FINISHED)->get();
+
         return [
             'title' => $this->faker->words(3,true),
             'content' => $this->faker->words(20,true),
-            'request_id' => $this->faker->randomElement(Requests::all()->pluck('id'))
+            'request_id' => $this->faker->unique()->randomElement($requests->pluck('id'))
         ];
     }
 }

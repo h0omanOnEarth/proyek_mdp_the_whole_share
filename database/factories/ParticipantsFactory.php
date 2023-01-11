@@ -39,6 +39,7 @@ class ParticipantsFactory extends Factory
             'request_id' => $this->faker->randomElement(Requests::all()->pluck('id')),
             'courier_id' => $courier_id,
             'pickup' => $this->faker->address(),
+            'note' => $this->faker->words(20,true),
             'status' => $participantStatus
         ];
     }

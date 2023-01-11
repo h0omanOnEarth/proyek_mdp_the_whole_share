@@ -12,5 +12,5 @@ class Participants extends Model
     protected $primaryKey = "id";
     public $incrementing = true;
     public $timestamps = true;
-    protected $fillable = ["user_id", "request_id", "pickup", "status"];
+    protected $fillable = ["user_id", "request_id", "pickup", "note", "status"];
 }

@@ -24,6 +24,7 @@ return new class extends Migration
                 ->references('id')->on('requests')
                 ->onDelete('cascade');
             $table->string('pickup');
+            $table->text('note');
             $table->tinyInteger('status');
             $table->timestamps();
         });

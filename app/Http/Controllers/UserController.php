@@ -61,6 +61,7 @@ class UserController extends Controller
            "user_id" =>(int)$request->user_id,
            "request_id" =>(int)$request->request_id,
            "pickup" => $request->pickup,
+           "note" => $request->note,
            "status"=>(int) $request->status
         ));
         return response()->json($participant, 201);

@@ -79,10 +79,9 @@ class UserController extends Controller
 
     function listPackageByRequest(Request $request){
         return response()->json(
-            Participants::select('participants.*', 'users.full_name')
+            Participants::select('participants.*', 'users.fullname')
              ->join('users', 'users.id', '=', 'participants.user_id')
              ->where('request_id',$request->id)
-             ->where('status',$request->stat)
              ->get(),
            200);
     }
@@ -128,7 +127,7 @@ class UserController extends Controller
         $requestloc = Requests::create(array(
             "location" => $request->location,
             "batch" => (int)$request->batch,
-            "deadline" => $request->deadline,
+            "deadline" => date('Y-m-d',strtotime($request->deadline)),
             "note"=> $request->note,
             "status"=> $request->status
         ));

@@ -78,7 +78,12 @@ class UserController extends Controller
     }
 
     function listPackageByRequest(Request $request){
-        return response()->json(Participants::where('request_id',$request->id)->get(), 200);
+        return response()->json(
+            Participants::select('participants.*', 'users.fullname')
+             ->join('users', 'users.id', '=', 'participants.user_id')
+             ->where('request_id',$request->id)
+             ->get(),
+           200);
     }
 
     function updateStatusParticipants(Request $request){

@@ -93,6 +93,19 @@ class UserController extends Controller
         return response()->json($participant, 200);
     }
 
+    //function edit request
+    function updateRequest(Request $request)
+    {
+        $request = Requests::find((int)$request->id);
+        $request->location = $request->location;
+        $request->batch = (int)$request->batch;
+        $request->deadline = $request->deadline;
+        $request->note = $request->note;
+        $request->status = $request->status;
+        $request->save();
+        return response()->json($request, 200);
+    }
+
     //function untuk insert user baru
     function insertUser(Request $request){
 
@@ -118,10 +131,6 @@ class UserController extends Controller
             "note"=> $request->note,
             "status"=> $request->status
         ));
-
-        // $requestloc = array(
-        //     "message" => "sukses"
-        // );
 
         return response()->json([
             "status" => 1, // Operation successful

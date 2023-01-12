@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('location');
             $table->tinyInteger('batch');
-            $table->timestamp('deadline')->nullable();
+            $table->date('deadline')->nullable();
             $table->text('note')->nullable();
             $table->string('status');
             $table->timestamps();

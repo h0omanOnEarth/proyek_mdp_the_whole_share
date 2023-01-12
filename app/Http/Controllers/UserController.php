@@ -96,14 +96,14 @@ class UserController extends Controller
     //function edit request
     function updateRequest(Request $request)
     {
-        $request = Requests::find((int)$request->id);
-        $request->location = $request->location;
-        $request->batch = (int)$request->batch;
-        $request->deadline = date('Y-m-d',strtotime($request->deadline));
-        $request->note = $request->note;
-        $request->status = $request->status;
-        $request->save();
-        return response()->json($request, 200);
+        $req = Requests::find((int)$request->id);
+        $req->location = $request->location;
+        $req->batch = (int)$request->batch;
+        $req->deadline = date('Y-m-d',strtotime($request->deadline));
+        $req->note = $request->note;
+        $req->status = $request->status;
+        $req->save();
+        return response()->json($req, 200);
     }
 
     //function untuk insert user baru

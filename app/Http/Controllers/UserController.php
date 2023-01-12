@@ -78,7 +78,12 @@ class UserController extends Controller
     }
 
     function listPackageByRequest(Request $request){
-        return response()->json(Participants::where('request_id',$request->id)->get(), 200);
+        return response()->json(
+            Participants::select('participants.*', 'users.fullname')
+             ->join('users', 'users.id', '=', 'participants.user_id')
+             ->where('request_id',$request->id)
+             ->get(),
+           200);
     }
 
     function updateStatusParticipants(Request $request){
@@ -86,6 +91,19 @@ class UserController extends Controller
         $participant->status = (int)$request->status;
         $participant->save();
         return response()->json($participant, 200);
+    }
+
+    //function edit request
+    function updateRequest(Request $request)
+    {
+        $req = Requests::find((int)$request->id);
+        $req->location = $request->location;
+        $req->batch = (int)$request->batch;
+        $req->deadline = date('Y-m-d',strtotime($request->deadline));
+        $req->note = $request->note;
+        $req->status = $request->status;
+        $req->save();
+        return response()->json($req, 200);
     }
 
     //function untuk insert user baru
@@ -109,14 +127,10 @@ class UserController extends Controller
         $requestloc = Requests::create(array(
             "location" => $request->location,
             "batch" => (int)$request->batch,
-            "deadline" => $request->deadline,
+            "deadline" => date('Y-m-d',strtotime($request->deadline)),
             "note"=> $request->note,
             "status"=> $request->status
         ));
-
-        // $requestloc = array(
-        //     "message" => "sukses"
-        // );
 
         return response()->json([
             "status" => 1, // Operation successful

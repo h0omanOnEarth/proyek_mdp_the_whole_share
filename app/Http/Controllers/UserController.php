@@ -99,7 +99,7 @@ class UserController extends Controller
         $request = Requests::find((int)$request->id);
         $request->location = $request->location;
         $request->batch = (int)$request->batch;
-        $request->deadline = $request->deadline;
+        $request->deadline = date('Y-m-d',strtotime($request->deadline));
         $request->note = $request->note;
         $request->status = $request->status;
         $request->save();

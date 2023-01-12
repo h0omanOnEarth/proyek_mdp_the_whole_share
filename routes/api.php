@@ -71,7 +71,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get("/listPackageByRequest","listPackageByRequest");
 
     //route untuk edit request
-    Route::get('/updateRequest', "updateRequest");
+    Route::post('/updateRequest', "updateRequest");
 });
 
 // An API that handles the courier requests for the application.

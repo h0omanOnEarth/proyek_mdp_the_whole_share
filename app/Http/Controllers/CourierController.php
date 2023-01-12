@@ -117,6 +117,30 @@ class CourierController extends Controller
     }
 
     /**
+     * Get packages that are waiting to be picked up by a courier. If the request is an invalid request (not complying to the rules),
+     * return an array of a single JSON object containing the reason why it failed.
+     */
+    public function getPendingPackets(Request $request)
+    {
+        if (!$this->checkUserIsValid($request, UserRoles::COURIER))
+            return response()->json([
+                [
+                    'status' => 0, // Fail status
+                    'reason' => "Invalid user request!"
+                ]
+            ]);
+
+        $packages = DB::table('participants')
+            ->join('users', 'users.id', '=', 'participants.user_id')
+            ->selectRaw('participants.id, participants.user_id, participants.request_id, participants.pickup, users.full_name')
+            // ->where('participants.courier_id', $request->user_id)
+            ->where('participants.status', ParticipantStatuses::PENDING)
+            ->get();
+
+        return response()->json($packages);
+    }
+
+    /**
      * Fetch all ongoing packages that needs to be delivered by the current authenticated courier. If the request is an invalid request (not complying to the rules),
      * return an array of a single JSON object containing the reason why it failed.
      */
@@ -162,6 +186,42 @@ class CourierController extends Controller
             ->get();
 
         return response()->json($packages);
+    }
+
+    /**
+     * Update a participant's package from `PENDING` to `DELIVERING` by the authenticated courier. Checks if the courier id is a valid id, and if the status of the package is indeed `PENDING`.
+     * When the check fails, return a failed response containing the reason, otherwise return a sucessful message.
+     *
+     * @return JsonObject A json response containing the status of the operation and message if successful, and a reason if fails.
+     *                    Contains 3 different status codes, 0 = Fail, 1 = Success, 2 = Invalid operation
+     */
+    public function takePackage(Request $request)
+    {
+        if (!$this->checkUserIsValid($request, UserRoles::COURIER))
+            return $this->failRespond("Invalid user request!");
+
+        // Checks if the request has the target participant id, if don't, fail the request.
+        if (!isset($request->participant_id))
+            return $this->failRespond("Does not have a target package id");
+
+        // Get the targeted participant based on the provided id. If a participant is not found, fail the request.
+        $participant = Participants::where('id', $request->participant_id)->first();
+        if (!isset($participant))
+            return $this->failRespond("Invalid package id!");
+
+        // Check if the status of the package, if it is in fact not `PENDING`, then fail the request with status code of 2.
+        if ($participant->status != ParticipantStatuses::PENDING)
+            return $this->failRespond("Package is not pending to be taken!", 2);
+
+        // All checks passes, update the status and courier id
+        $participant->courier_id = $request->user_id;
+        $participant->status = ParticipantStatuses::DELIVERING;
+        $participant->save();
+
+        return response()->json([
+            "status" => 1, // Success status
+            "message" => "Package status successfully updated!"
+        ]);
     }
 
     /**

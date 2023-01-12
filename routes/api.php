@@ -82,8 +82,10 @@ Route::controller(CourierController::class)->group(function () {
         Route::get('/countFinished', 'countFinishedPackets');
 
         // Packages manipulation APIe
+        Route::get('/getAvailablePackets', 'getPendingPackets');
         Route::get('/getOngoingPackets', 'getOngoingPackets');
         Route::get('/getDeliveredPackets', 'getDeliveredPackets');
+        Route::put('/takePackage', 'takePackage');
         Route::put('/updatePackageStatus', 'updatePacketStatus');
     });
 });

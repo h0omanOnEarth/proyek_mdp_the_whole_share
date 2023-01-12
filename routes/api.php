@@ -68,7 +68,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/updateStatusParticipants','updateStatusParticipants');
 
     //route mengambil participant berdasarkan request
-    Route::get("/listPackageByRequest","listPackageByRequest");
+    Route::post("/listPackageByRequest","listPackageByRequest");
 });
 
 // An API that handles the courier requests for the application.

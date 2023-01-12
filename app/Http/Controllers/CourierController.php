@@ -59,7 +59,6 @@ class CourierController extends Controller
         // Fetch all participants that has not been handled by a courier yet.
         $countParticipants = Participants::where('participants.courier_id', null)
             ->join('requests', 'requests.id' , '=', 'participants.request_id')
-            ->where('requests.status', RequestStatuses::PENDING)
             ->count();
 
         return "$countParticipants";

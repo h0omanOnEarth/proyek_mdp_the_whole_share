@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ParticipantStatuses;
-use App\Helpers\RequestStatuses;
 use App\Helpers\UserRoles;
 use App\Models\Participants;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -118,6 +116,8 @@ class CourierController extends Controller
     /**
      * Get packages that are waiting to be picked up by a courier. If the request is an invalid request (not complying to the rules),
      * return an array of a single JSON object containing the reason why it failed.
+     *
+     * @return JsonArray An array of JsonObjects containing the datas of the packages.
      */
     public function getPendingPackets(Request $request)
     {
@@ -142,6 +142,8 @@ class CourierController extends Controller
     /**
      * Fetch all ongoing packages that needs to be delivered by the current authenticated courier. If the request is an invalid request (not complying to the rules),
      * return an array of a single JSON object containing the reason why it failed.
+     *
+     * @return JsonArray An array of JsonObjects containing the datas of the packages.
      */
     public function getOngoingPackets(Request $request)
     {
@@ -166,6 +168,8 @@ class CourierController extends Controller
     /**
      * Fetch all delivered packages that needs to be delivered by the current authenticated courier. If the request is an invalid request (not complying to the rules),
      * return an array of a single JSON object containing the reason why it failed.
+     *
+     * @return JsonArray An array of JsonObjects containing the datas of the packages.
      */
     public function getDeliveredPackets(Request $request)
     {
@@ -226,6 +230,8 @@ class CourierController extends Controller
     /**
      * Update a participant's package to the status provided by the request parameter. Checks if the request is coming fron an authenticated courier,
      * when the check fails, return a failed response containing the reason, otherwise return a sucessful message.
+     *
+     * @return JsonObject The object containing the status of the request and the reason of failure if it fails, otherwise the values of the package.
      */
     public function updatePacketStatus(Request $request) {
         if (!$this->checkUserIsValid($request, UserRoles::COURIER))
@@ -247,6 +253,58 @@ class CourierController extends Controller
         return response()->json([
             "status" => 1, // Success status
             "message" => "Package status successfully updated!"
+        ]);
+    }
+
+    /**
+     * Cancel a courier delivery when the courier requested to. Updates the package status to `Pending` again.
+     *
+     * @return JsonObject The response containing the status of the operation.
+     */
+    public function cancelPackageDelivery(Request $request)
+    {
+        if (!$this->checkUserIsValid($request, UserRoles::COURIER))
+            return $this->failRespond("Invalid user request!");
+
+        if (!isset($request->package_id))
+            return $this->failRespond("Target package is not set!");
+
+        // Check is the id is a valid package
+        $package = Participants::where("id", $request->package_id)
+            ->first();
+        if ($package->status != ParticipantStatuses::DELIVERING)
+            return $this->failRespond("Invalid operation on the current state of the package!");
+
+        $package->status = ParticipantStatuses::PENDING;
+        $package->courier_id = null;
+        $package->save();
+
+        return response()->json([
+            "status" => 1, // Successful status
+            "message" => "Successfully cancelled the delivery!"
+        ]);
+    }
+
+    /**
+     * Get the details of the requested packet and return it as a json object.
+     *
+     * @return JsonObject The object containing the status of the request and the reason of failure if it fails, otherwise the values of the package.
+     */
+    public function getPacketDetail(Request $request)
+    {
+        if (!isset($request->package_id))
+            return $this->failRespond("No packet is specified!");
+
+        $packet = DB::table('participants')
+            ->join('requests', 'requests.id', '=', 'participants.request_id')
+            ->join('users', 'users.id', '=', 'participants.user_id')
+            ->selectRaw("participants.id, participants.pickup, users.full_name, requests.location")
+            ->where('participants.id', $request->package_id)
+            ->first();
+
+        return response()->json([
+            'status' => 1, // Successful status
+            'detail' => $packet
         ]);
     }
 }

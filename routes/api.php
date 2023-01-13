@@ -90,5 +90,9 @@ Route::controller(CourierController::class)->group(function () {
         Route::get('/getDeliveredPackets', 'getDeliveredPackets');
         Route::put('/takePackage', 'takePackage');
         Route::put('/updatePackageStatus', 'updatePacketStatus');
+        Route::put('/cancelPackageDelivery', 'cancelPackageDelivery');
+
+        // Package details
+        Route::get('/getPacketDetail', 'getPacketDetail');
     });
 });

@@ -72,6 +72,12 @@ Route::controller(UserController::class)->group(function () {
 
     //route untuk edit request
     Route::post('/updateRequest', "updateRequest");
+
+    //route untuk add report
+    Route::post('/addreport', "addReport");
+    Route::post('/updatebatch', "updatebatch");
+    Route::post('/deleteparticipant', "deleteparticipant");
+
 });
 
 // An API that handles the courier requests for the application.

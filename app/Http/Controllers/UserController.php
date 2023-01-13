@@ -122,6 +122,33 @@ class UserController extends Controller
 
     }
 
+    //function untuk add report
+    function addReport(Request $request)
+    {
+        $report = News::create(array(
+            "title" => $request->title,
+            "content" => $request->content,
+            "request_id"=> (int)$request->request_id
+        ));
+
+        return response()->json($report, 201);
+    }
+
+    function updatebatch(Request $request)
+    {
+        $req = Requests::find((int)$request->id);
+        $req->batch = (int)$request->batch;
+        $req->save();
+        return response()->json($req, 200);
+    }
+
+    function deleteparticipant(Request $request)
+    {
+        $participants = Participants::where('request_id',(int)$request->id)->get();
+        $participants->delete();
+        return response()->json($participants, 203);
+    }
+
     function addrequest(Request $request){
 
         $requestloc = Requests::create(array(

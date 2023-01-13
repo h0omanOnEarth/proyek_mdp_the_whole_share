@@ -144,9 +144,8 @@ class UserController extends Controller
 
     function deleteparticipant(Request $request)
     {
-        $participants = Participants::where('request_id',(int)$request->id)->get();
-        $participants->delete();
-        return response()->json($participants, 203);
+        $participants = Participants::where('request_id',(int)$request->id)->delete();
+        return response()->json($participants, 200);
     }
 
     function addrequest(Request $request){

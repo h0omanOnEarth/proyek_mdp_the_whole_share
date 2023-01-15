@@ -308,6 +308,11 @@ class CourierController extends Controller
         ]);
     }
 
+    /**
+     * Finish the package request by uploading image as proof that the package has been delivered, and update the status of the package.
+     *
+     * @return JsonObject The object containing the status of the request and the reason of failure if it fails, otherwise the values of the package.
+     */
     public function finishDeliverPacket(Request $request) {
         if (!$this->checkUserIsValid($request, UserRoles::COURIER))
             return $this->failRespond("Invalid user request!");

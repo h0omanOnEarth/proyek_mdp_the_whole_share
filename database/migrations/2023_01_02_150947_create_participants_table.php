@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text('note');
             $table->tinyInteger('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

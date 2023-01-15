@@ -79,9 +79,20 @@ class UserController extends Controller
 
     function listPackageByRequest(Request $request){
         return response()->json(
-            Participants::select('participants.*', 'users.fullname')
+            Participants::select('participants.*', 'users.full_name')
              ->join('users', 'users.id', '=', 'participants.user_id')
              ->where('request_id',$request->id)
+             ->where('status',$request->stat)
+             ->get(),
+           200);
+    }
+
+    function getPackageByID(Request $req){
+        return response()->json(
+            Participants::select('participants.*', 'users.full_name', 'requests.location')
+             ->join('users', 'users.id', '=', 'participants.user_id')
+             ->join('requests', 'requests.id', '=', 'participants.request_id')
+             ->where('participants.id',$req->id)
              ->get(),
            200);
     }
@@ -120,6 +131,32 @@ class UserController extends Controller
         ));
         return response()->json($user, 201);
 
+    }
+
+    //function untuk add report
+    function addReport(Request $request)
+    {
+        $report = News::create(array(
+            "title" => $request->title,
+            "content" => $request->content,
+            "request_id"=> (int)$request->request_id
+        ));
+
+        return response()->json($report, 201);
+    }
+
+    function updatebatch(Request $request)
+    {
+        $req = Requests::find((int)$request->id);
+        $req->batch = (int)$request->batch;
+        $req->save();
+        return response()->json($req, 200);
+    }
+
+    function deleteparticipant(Request $request)
+    {
+        $participants = Participants::where('request_id',(int)$request->id)->delete();
+        return response()->json($participants, 200);
     }
 
     function addrequest(Request $request){

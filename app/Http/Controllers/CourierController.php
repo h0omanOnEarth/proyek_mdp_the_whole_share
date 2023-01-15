@@ -307,4 +307,33 @@ class CourierController extends Controller
             'detail' => $packet
         ]);
     }
+
+    public function finishDeliverPacket(Request $request) {
+        if (!$this->checkUserIsValid($request, UserRoles::COURIER))
+            return $this->failRespond("Invalid user request!");
+
+        if ($request->file('image') == null)
+            return $this->failRespond("No image has been uploaded!");
+
+        if (!isset($request->image_name))
+            return $this->failRespond("Image name not designated!");
+
+        if (!isset($request->package_id))
+            return $this->failRespond("Target package id not set!");
+
+        $image = $request->file('image');
+        $path = $image->storeAs('public/images', $request->image_name);
+
+        if (isset($path)) {
+            $participant = Participants::where('id', $request->package_id)->first();
+            $participant->status = ParticipantStatuses::DELIVERED;
+            $participant->save();
+
+            return response()->json([
+                'status' => 1, // Successful request
+                'path' => $path
+            ]);
+        }
+        else return $this->failRespond("Fail to store the image to the server storage!");
+    }
 }

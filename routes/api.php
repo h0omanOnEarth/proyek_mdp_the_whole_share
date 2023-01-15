@@ -94,5 +94,8 @@ Route::controller(CourierController::class)->group(function () {
 
         // Package details
         Route::get('/getPacketDetail', 'getPacketDetail');
+
+        // Finish Delivery
+        Route::post('/uploadPhoto', 'finishDeliverPacket');
     });
 });

@@ -298,7 +298,7 @@ class CourierController extends Controller
         $packet = DB::table('participants')
             ->join('requests', 'requests.id', '=', 'participants.request_id')
             ->join('users', 'users.id', '=', 'participants.user_id')
-            ->selectRaw("participants.id, participants.pickup, users.full_name, requests.location")
+            ->selectRaw("participants.id, participants.pickup, participants.note, users.full_name, requests.location")
             ->where('participants.id', $request->package_id)
             ->first();
 

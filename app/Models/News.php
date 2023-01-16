@@ -12,5 +12,5 @@ class News extends Model
     protected $primaryKey = "id";
     public $incrementing = true;
     public $timestamps = true;
-    protected $fillable = ["title", "content","request_id"];
+    protected $fillable = ["title", "content","request_id", "batch"];
 }

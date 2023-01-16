@@ -139,7 +139,8 @@ class UserController extends Controller
         $report = News::create(array(
             "title" => $request->title,
             "content" => $request->content,
-            "request_id"=> (int)$request->request_id
+            "request_id"=> (int)$request->request_id,
+            "batch"=> (int)$request->batch,
         ));
 
         return response()->json($report, 201);

@@ -26,7 +26,8 @@ class NewsFactory extends Factory
         return [
             'title' => $this->faker->words(3,true),
             'content' => $this->faker->words(20,true),
-            'request_id' => $this->faker->unique()->randomElement($requests->pluck('id'))
+            'request_id' => $this->faker->unique()->randomElement($requests->pluck('id')),
+            'batch' => 1
         ];
     }
 }
